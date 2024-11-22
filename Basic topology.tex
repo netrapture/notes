@@ -34,6 +34,7 @@
 \newtheorem*{example}{Example}
 \newtheorem*{lemma}{Lemma}
 \newtheorem*{note}{Note}
+\newtheorem*{theorem}{Theorem}
 
 \newcommand{\st}{\ni :}
 
@@ -65,6 +66,12 @@ If $(x,y) \in (U_1 \cap U_2) \times (V_1 \times V_2)$ then $x \in U_1 \cap U_2$ 
 \end{verify}
 \end{note}
 
+\begin{note}{(\textbf{Properties of bijections})}
+\begin{enumerate}
+\item If f is a bijection, $f^{-1}$ is a bijection
+\item if f is a bijection, $((f^{-1})^{-1} = f$
+\end{enumerate}
+\end{note}
 
 \section{Topological spaces}
 \subsection{Base for a topology}
@@ -269,7 +276,6 @@ A mapping f of X to Y is $\textbf{continuous at } x_0 \in Y$ if for any nbhd V' 
 \end{definition}
 
 
-\newtheorem*{theorem}{Theorem: $\epsilon \text{--} \delta$}
 \begin{theorem} $f:\mathbb{R} \rightarrow \mathbb{R}$ is $(\epsilon \text{--} \delta$)-continuous if and only if it is open-set continuous.
 \end{theorem}
 Recall $f:\mathbb{R} \rightarrow \mathbb{R}$ is $(\epsilon \text{--} \delta$)-continuous, if $\forall \epsilon > 0 \; \exists \delta > 0$ such that $|x - a| < \delta \implies |f(x) -f(a)| < \epsilon$
@@ -308,9 +314,9 @@ $\newline$
 Say  $f:X \rightarrow Y$ is a homeomorphism.
 Define $\tilde{f}:\mathcal{T}_X \xrightarrow{\sim} \mathcal{T}_Y$ by $\tilde{f}(U) = f(U)$ and $\tilde{f}^{-1}: \mathcal{T}_Y \rightarrow \mathcal{T}_X$ by $\tilde{f}^{-1}(V) = f^{-1}(V)$
 \begin{enumerate}
-\item Say $U \in  \mathcal{T}_X$. $\tilde{f}$ is well-defined requires $\tilde{f}(U) \in \mathcal{T}_Y$. 
+\item $\tilde{f}$ is well-defined requires $\tilde{f}$ is defined on its domain. If U is open $\tilde{f}(U) = f(U)$, and the map $im_{f}$ is defined on subsets of X. We must also show $\tilde{f}$ has  images in the specified codomain, but its images are images of f which ....$\tilde{f}(U) \in \mathcal{T}_Y$. Say $U \in  \mathcal{T}_X$.
 $\tilde{f}(U) = f(U) = {(f^{-1}})^{-1}(U)$ and since $f^{-1}$ is continuous ${(f^{-1}})^{-1}(U) \in \mathcal{T}_Y$ as was to be shown.
-\item
+\item 
 \end{enumerate}
 \end{proof}
 
