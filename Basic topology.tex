@@ -6,9 +6,14 @@
 \usepackage{enumitem}
 \usepackage{amsthm}
 
+\usepackage{etoolbox}
+\AtBeginEnvironment{example}{\tiny}
+\AtBeginEnvironment{remark}{\small}
+\AtBeginEnvironment{verify}{\tiny}
+
 % See the ``Article customise'' template for come common customisations
 
-\title{Notes on topology}
+\title{Basic topology}
 \author{}
 \date{} % delete this line to display the current date
 
@@ -33,66 +38,93 @@
 \newcommand{\st}{\ni :}
 
 
-\begin{note}{$\textbf{(Empty families)}$} If $A = \emptyset$ and $A_{\alpha} \subseteq P$ then $\bigcup\limits_{\alpha \in A} A_{\alpha} = \{x \in P | \exists \; \alpha \in A, x \in A_{\alpha} \}$ and since there is no $\alpha \st x \in A_{\alpha}$ it means $\bigcup\limits_{\alpha \in A} A_{\alpha} = \emptyset$. Similary $\bigcap\limits_{\alpha \in A} A_{\alpha} = \{x \in P | \forall \alpha \in A, x \in A_{\alpha} \} =  \emptyset$, because $\not \exists \alpha \st x \in  A_{\alpha}$. Define $\prod\limits_{\alpha \in A} A_{\alpha} = \{c: A \rightarrow \bigcup\limits_{\alpha \in A} A_{\alpha}\}$. When $A = \emptyset$ then  $\bigcup\limits_{\alpha \in A} A_{\alpha} = \emptyset$ and 
-\end{note}
-$\newline$
+\section{Set theory preliminaries}
+%\subsection{}
 
-\begin{definition}{(\textbf{Basis for a topology})} A collection $\mathcal{B}$ of subsets of a set X is $\textbf{a basis for a topology}$ (on X) if it satisfies:
+\begin{note}{(\textbf{Empty families})}
+$\newline$ 
+Let A be an empty index set and  let $(A_{\alpha})_{\alpha \in A}$ be a family of subsets of X indexed by A.
+$\newline$ 
+$\bigcup\limits_{\alpha \in A} A_{\alpha} = \{x \in X | \exists \; \alpha \in A, x \in A_{\alpha} \}$ and since there is no $\alpha \st x \in A_{\alpha}$ so $\bigcup\limits_{\alpha \in A} A_{\alpha} = \emptyset$.
+$\newline$ 
+$\bigcap\limits_{\alpha \in A} A_{\alpha} = \{x \in X | \forall \alpha \in A, x \in A_{\alpha} \} =  \emptyset$, because $\not \exists \alpha \st x \in  A_{\alpha}$. 
+$\newline$ 
+Recall $\prod\limits_{\alpha \in A} A_{\alpha} = \{f: A \rightarrow \bigcup\limits_{\alpha \in A} A_{\alpha}\}$. When $A = \emptyset$ then  $\bigcup\limits_{\alpha \in A} A_{\alpha} = \emptyset$ and no function has an empty range so the set $\prod\limits_{\alpha \in A} A_{\alpha} = \emptyset$
+\end{note}
+
+\begin{note}{(\textbf{Subsets of product set})}
+$U_1 \times V_1 \cap U_2 \cap V_2 = (U_1 \cap U_2) \times (V_1 \times V_2)$
+\begin{verify} () 
+\begin{enumerate}
+\item (Show $U_1 \times V_1 \cap U_2 \cap V_2 \subseteq (U_1 \cap U_2) \times (V_1 \times V_2)$)
+If $(x,y) \in U_1 \times V_1 \cap U_2 \cap V_2 $ then $(x,y) \in U_1 \times V_1$ so $x \in U_1$ and $y \in V_1$.
+Also $(x,y) \in  U_2 \cap V_2$ so $x \in U_2$ and $y \in V_2$. So $x \in U_1$ and $x \in U_2$ so $x \in U_1 \cap U_2$. Similarly, $y \in V_1 \cap V_2$. So $(x,y) \in (U_1 \cap U_2) \times (V_1 \cap V_2)$ 
+\item (Show $U_1 \times V_1 \cap U_2 \cap V_2 \supseteq (U_1 \cap U_2) \times (V_1 \times V_2)$).
+If $(x,y) \in (U_1 \cap U_2) \times (V_1 \times V_2)$ then $x \in U_1 \cap U_2$ and $y \in (V_1 \cap V_2)$. Then $x \in U_1$ and $y \in V_1$ so $(x,y) \in U_1 \times V_1$. Similarly,  $(x,y) \in U_2 \times V_2$. So $(x,y) \in U_1 \times V_1 \cap  U_2 \times V_2$
+\end{enumerate}
+\end{verify}
+\end{note}
+
+
+\section{Topological spaces}
+\subsection{Base for a topology}
+
+\begin{definition}{(\textbf{Base for a topology})} A collection $\mathcal{B}$ of subsets of a set X is $\textbf{a base for a topology}$ (on X) if it satisfies:
 \begin{enumerate}[label=(\arabic*)]
 \item $\mathcal{B}$ is a cover:  $\forall x \in X \;  \exists B \in \mathcal{B} \st x \in B$
 \item If $B_1, B_2 \in \mathcal{B}$ and $x \in B_1 \cap B_2$ then $\exists \; B_3 \in \mathcal{B} \st x \in B_3 \subseteq B_1 \cap B_2$
 \end{enumerate}
 \end{definition}
 
-$\newline$ 
-
-\begin{example}{\textbf{(Example of a basis)}} $\mathcal{B}_{\mathbb{R}^2}  = \{B_r(p) | p \in \mathbb{R}^2, r \in \mathbb{R}^+\}$ is a basis for a topology.
-\end{example}
-
-\begin{verify}  { (  $\mathcal{B}_{\mathbb{R}^2} \textbf{ is a basis}$  )       }
-\begin{enumerate}
-\item $\forall (x,y) =: p \in \mathbb{R}^2$ then $p \in B_r(p)$ for any $r \in \mathbb{R}^+$, so every point is contained in a basis element.
-\item If $p \in B_{r_1}(p_1) =: B_1 \cap  B_{r_2}(p_2) =: B_2$, then $p \in B_r(p) \subseteq B_1 \cap B_2$ for $r = \min_{i=1,2} \{r_i - d(p,r_i)\} -\epsilon, \; \forall \epsilon > 0$
-\end{enumerate}
-\end{verify}
-
-
-\begin{example}
-Example of a basis
-$\newline$
-$\mathcal{B}  = \{\textnormal{interiors of all rectangles in } \mathbb{R}^2$ is a basis for a topology.
-\begin{verify}
-$\newline$ 
-\begin{enumerate}
-\item $\mathcal{B}$  is a cover of $\mathbb{R}^2$ since $\forall p=(x,y) \in \mathbb{R}^2, p \in (x-a,x+a) \times (y-b,y+b)$  for any $a,b > 0$, so every point is contained in a basis element.
-\item If $p \in B_1 \cap  B_2$, then $p \in B_3 \subseteq B_1 \cap B_2$ where
-\end{enumerate}
-\end{verify}
-\end{example}
-
 \begin{remark}
-Property 2 of a basis can be  extended from the  intersection of two basis elements to any finite intersection viz. whenever $x \in \bigcap\limits_{i =1}^n B_i \;  \exists B \in \mathcal{B} \st x \in B \subseteq  \bigcap\limits_{i  =1}^n B_i$ (P(n))
+Property 2 of a base can be  extended from the  intersection of two base elements to any finite intersection viz. whenever $x \in \bigcap\limits_{i =1}^n B_i \;  \exists B \in \mathcal{B} \st x \in B \subseteq  \bigcap\limits_{i  =1}^n B_i$ (P(n))
 \begin{verify} (Proof by induction) 
 \begin{enumerate}
 \item P(1):  $(B_i) = \{B_1\}$. Say $x \in \bigcap\limits_{i  =1}^1 B_i = B_1\;  \exists B \in \mathcal{B} \st x \in B \subseteq B_1$ namely $B=B_1$
 \item (IH) Assume P(k): $x \in \bigcap\limits_{i  =1}^k \implies  \exists B \in \mathcal{B} \st x \in B \subseteq  \bigcap\limits_{i  =1}^k B_i$
-\item Consider P(k+1):  Say $x \in \bigcap\limits_{i  =1}^{k+1} B_i = (\bigcap\limits_{i  =1}^k B_i) \cap B_{k+1}$ so $x \in \bigcap\limits_{i  =1}^k B_i$ and $x \in B_{k+1}$. By (IH) $x \in \bigcap\limits_{i  =1}^k B_i \implies \exists B' \in \mathcal{B} \st x \in B' \subseteq \bigcap\limits_{i  =1}^k B_i$ and by the property of a basis  $x \in B' \cap B_{k+1} \implies \exists B'' \in \mathcal{B} \st x \in B'' \subseteq B' \cap B_{k+1} \subseteq \bigcap\limits_{i  =1}^k \cap B_{k+1} = \bigcap\limits_{i  =1}^{k+1} B_i$
+\item Consider P(k+1):  Say $x \in \bigcap\limits_{i  =1}^{k+1} B_i = (\bigcap\limits_{i  =1}^k B_i) \cap B_{k+1}$ so $x \in \bigcap\limits_{i  =1}^k B_i$ and $x \in B_{k+1}$. By (IH) $x \in \bigcap\limits_{i  =1}^k B_i \implies \exists B' \in \mathcal{B} \st x \in B' \subseteq \bigcap\limits_{i  =1}^k B_i$ and by the property of a base  $x \in B' \cap B_{k+1} \implies \exists B'' \in \mathcal{B} \st x \in B'' \subseteq B' \cap B_{k+1} \subseteq \bigcap\limits_{i  =1}^k \cap B_{k+1} = \bigcap\limits_{i  =1}^{k+1} B_i$
 \item Thus the proposition holds for all $n \in \mathcal{N}: x \in \bigcap\limits_{i =1}^n B_i \implies \;  \exists B \in \mathcal{B} \st x \in B \subseteq  \bigcap\limits_{i  =1}^n B_i$
 \end{enumerate}
 \end{verify}
 \end{remark}
 
 
-\begin{definition}{[Topology generated by a basis]}
-If $\mathcal{B}$ is a basis for a topology on X, then the $\textbf{topology generated}$ by it is defined by:
+
+\begin{example}{\textbf{(Example of a base)}} $\mathcal{B}_{std}  = \{B_r(p) | p \in \mathbb{R}^2, r \in \mathbb{R}^+\}$ is a base for a topology.
+\begin{verify}  { (  $\mathcal{B}_{std} \textbf{ is a base}$  )       }
+\begin{enumerate}
+\item $\forall (x,y) =: p \in \mathbb{R}^2$,  $p \in B_r(p)$ for any $r \in \mathbb{R}^+$, so every point is contained in a base element, so  $\mathcal{B}_{\mathbb{R}^2}$ is a cover.
+\item If $p \in B_{r_1}(p_1) \cap  B_{r_2}(p_2)$  then $p \in B_r(p) \subseteq B_{r_1}(p_1) \cap  B_{r_2}(p_2)$ for $r = \min_{i=1,2} \{r_i - d(p,r_i)\} -\epsilon, \; \forall \epsilon > 0$
+\end{enumerate}
+\end{verify}
+\end{example}
+
+
+\begin{example}
+%$\newline$
+$\mathcal{B}  = \{\textnormal{interiors of all rectangles in } \mathbb{R}^2$ is a base for a topology.
+\begin{verify} { (  $\mathcal{B}$ is a base)       }
+%$\newline$ 
+\begin{enumerate}
+\item $\mathcal{B}$  is a cover of $\mathbb{R}^2$ since $\forall p=(x,y) \in \mathbb{R}^2, p \in (x-a,x+a) \times (y-b,y+b)$  for any $a,b > 0$, so every point is contained in a base element.
+\item If $p \in B_1 \cap  B_2$, then $p \in B_3 \subseteq B_1 \cap B_2$ where
+\end{enumerate}
+\end{verify}
+\end{example}
+
+
+
+
+\begin{definition}{[Topology generated by a base]}
+If $\mathcal{B}$ is a base for a topology on X, then the $\textbf{topology generated}$ by it is defined by:
 U is open in $\mathcal{T}_{\mathcal{B}}$ if $\forall x \in U, \exists B \in \mathcal{B} \ni: x \in B \subseteq U$
 \end{definition}
 
 
 
-\begin{verify}{[the topology generated by a basis is a topology]}
+\begin{verify}{[the topology generated by a base is a topology]}
 $\newline$ 
-Let the collection $\mathcal{B} \subseteq \mathcal{P}(X)$ be a basis for a topology, $\mathcal{T}_{\mathcal{B}}$
+Let the collection $\mathcal{B} \subseteq \mathcal{P}(X)$ be a base for a topology, $\mathcal{T}_{\mathcal{B}}$
 \begin{enumerate}
 \item $\emptyset$ and X $\in \mathcal{T}_{\mathcal{B}}$ follows from vacuity and being a cover
 \item Let $(U_i)_{i=1}^n$ be open sets in $\mathcal{T}_{\mathcal{B}}$. 
@@ -107,23 +139,23 @@ Since $\forall i \; U_i$ is open in $\mathcal{T}_{\mathcal{B}}$ then $ \forall i
 
 
 \begin{remark}
-The elements, B, of a basis are open sets in the topology generated by the basis since $\forall x \in B, x \in B \subseteq B$
+The elements, B, of a base are open sets in the topology generated by the base since $\forall x \in B, x \in B \subseteq B$
 \end{remark}
 
 
 
 \begin{example}
-Example of topology defined by a basis
+Example of topology defined by a base
 $\newline$ 
 Let $(X,\mathcal{T}_X)$ and $(Y,\mathcal{T}_Y)$ be topological spaces.
-Consider the set $X \times Y$. Then $\mathcal{B} = \{ U \times V|$  U open in X and V open in Y\} is a basis for a topology.
+Consider the set $X \times Y$. Then $\mathcal{B} = \{ U \times V|$  U open in X and V open in Y\} is a base for a topology.
 \begin{verify} 
 $\newline$ 
 \end{verify}
 \end{example}
 
 \begin{lemma}
-For a set X, if $\mathcal{B}$ is a basis for a topology $\mathcal{T}$ on X, then  $\mathcal{T}$ is the collection of all unions of all elements of $\mathcal{B}$ .
+For a set X, if $\mathcal{B}$ is a base for a topology $\mathcal{T}$ on X, then  $\mathcal{T}$ is the collection of all unions of all elements of $\mathcal{B}$ .
 \begin{proof} Show $\mathcal{T}$= the collection of all unions of all elements of $\mathcal{B}$
 \begin{enumerate}
 \item ($\subseteq$) Say $U \in \mathcal{T}$. Then U is open, so $\forall x \in U \; \exists B_x \in \mathcal{B}$ with $x \in B_x \subseteq U$. 
@@ -132,18 +164,18 @@ Claim $U = \bigcup\limits_{x \in X} B_x$
 \item ($U \subseteq  \bigcup\limits_{x \in X} B_x$) Say $x \in U$. Then $x \in B_x \subseteq \bigcup\limits_{x \in X} B_x$
 \item ($ \bigcup\limits_{x \in X} B_x \subseteq U$) Say $\tilde{x} \in \bigcup\limits_{x \in X} B_x$. Then $\exists x' \st \tilde{x} \in B_{x'}$ But $B_{x'} \subseteq U$ so $\tilde{x} \in U$
 \end{enumerate}
-\item  ($\supseteq$) Say B is a union of elements of  $\mathcal{B}$. Show B is open wrt the basis. So $B = \bigcup\limits_{\alpha \in A} B_{\alpha}$ and say $x \in B$. Then $x \in B_{\alpha_0}$ for some $\alpha_0 \in A$ and $B_{\alpha_0} \subseteq B$. So B is open
+\item  ($\supseteq$) Say B is a union of elements of  $\mathcal{B}$. Show B is open wrt the base. So $B = \bigcup\limits_{\alpha \in A} B_{\alpha}$ and say $x \in B$. Then $x \in B_{\alpha_0}$ for some $\alpha_0 \in A$ and $B_{\alpha_0} \subseteq B$. So B is open
 \end{enumerate}
 \end{proof}
 \end{lemma}
 
 \begin{lemma}
-For a space X, suppose $\mathcal{C}$ is a collection of open sets of X such that for each open set U of X and each $x \in U$, there is an element C of   $\mathcal{C}$ such that $x \in C \subseteq U$. Then $\mathcal{C}$ is a basis for the topology on X.
+For a space X, suppose $\mathcal{C}$ is a collection of open sets of X such that for each open set U of X and each $x \in U$, there is an element C of   $\mathcal{C}$ such that $x \in C \subseteq U$. Then $\mathcal{C}$ is a base for the topology on X.
 \end{lemma}
 \begin{proof}
-Need to show $\mathcal{C}$ is a basis and the topology it generates is the given topology on X
+Need to show $\mathcal{C}$ is a base and the topology it generates is the given topology on X
 \begin{enumerate}[label=(\alph*)]
-\item ($\mathcal{C}$ is a basis)
+\item ($\mathcal{C}$ is a base)
 \begin{enumerate}
 \item ($\mathcal{C}$ covers X)
 X itself is an open set of X, so $\forall x \in X \;  \exists C \in  \mathcal{C} \st x \in C ( \subseteq X)$ so  $\mathcal{C}$ is a cover.
@@ -153,12 +185,29 @@ X itself is an open set of X, so $\forall x \in X \;  \exists C \in  \mathcal{C}
 \end{enumerate}
 \end{proof}
 
+\subsection{Subbase for a topology}
+
+\begin{definition}{Subbase for a topology}
+$\newline$
+A subbase $\mathcal{S}$ for a topology on X is cover of X and $\textbf{the topology generated by the subbase}$ is the collection $\mathcal{T}$ of unions of finite intersections of elements of  $\mathcal{S}$
+\end{definition}
+\begin{verify} (the topology generated by a subbase is indeed a topology)
+$\newline$ 
+\begin{enumerate}
+\item 
+\item 
+\item
+\end{enumerate}
+\end{verify}
+
+\subsection{Subspace topology}
+
 \begin{definition}{Subspace topology}
 $\newline$ 
 For a set $Y \subseteq (X,\mathcal{T}_X)$, $\mathcal{T}_Y = \{U \cap Y | U \in \mathcal{T}_X\}$ is a topology for Y, called $\textbf{the subspace topology}$ on Y.
 \end{definition}
 
-\begin{verify} ($\mathcal{T}_Y = \{U \cap Y | U \in \mathcal{T}_X\}$ is a topology for Y)
+\begin{verify} (The subspace topology $\mathcal{T}_Y = \{U \cap Y | U \in \mathcal{T}_X\}$ is a topology for Y)
 \begin{enumerate}
 \item $\emptyset = \emptyset \cap Y$ and $Y = X \cap Y$
 \item If $(V_i)_{1 \le i \le k} $ are open sets in Y, then $\exists (U_i)_{1 \le i \le k}$ open in U $\st \bigcap\limits_{i=1}^k V_i = \bigcap\limits_{i=1}^k (U_i \cap Y) = (\bigcap\limits_{i=1}^k U_i) \cap Y$ and $\bigcap\limits_{i=1}^k U_i$ is open in X so  $\bigcap\limits_{i=1}^k U_i) \cap Y$ is open in Y.
@@ -168,29 +217,29 @@ For a set $Y \subseteq (X,\mathcal{T}_X)$, $\mathcal{T}_Y = \{U \cap Y | U \in \
 
 \begin{lemma}
 $\newline$
-If $Y \subseteq (X,\mathcal{T}_X)$ and $\mathcal{B}$ is a basis for the topology on X, then $\{B \cap Y| B \in \mathcal{B}\} =: \mathcal{B}_Y$ is a basis for the subspace topology on Y.
+If $Y \subseteq (X,\mathcal{T}_X)$ and $\mathcal{B}$ is a base for the topology on X, then $\{B \cap Y| B \in \mathcal{B}\} =: \mathcal{B}_Y$ is a base for the subspace topology on Y.
 \begin{verify}
 $\newline$
 \begin{enumerate}
-\item (cover) If $x \in Y$, then $x \in X$ so since $\mathcal{B}$ is a basis for X, it is a cover for X so $\exists B \in \mathcal{B} \st x \in B$ so $x \in B \cap Y$ and $ B \cap Y \in  \mathcal{B}_Y$ so it is a cover
-\item If $x \in Y$ and $x \in B_1 \cap B_2$ then $x \in B'_1 \cap Y  \cap B'_2 \cap Y$ for basis elements $B'_1,B''_2$ of X. So $x \in  B'_1 \cap B'_2$ so $\exists B'_3 \st x \in  B'_1 \cap B'_2 \subseteq B'_3$. Then $B_3 = B'_3 \cap Y$ satisfies $x \in  B_1 \cap B_2 \subseteq B_3$
+\item (cover) If $x \in Y$, then $x \in X$ so since $\mathcal{B}$ is a base for X, it is a cover for X so $\exists B \in \mathcal{B} \st x \in B$ so $x \in B \cap Y$ and $ B \cap Y \in  \mathcal{B}_Y$ so it is a cover
+\item If $x \in Y$ and $x \in B_1 \cap B_2$ then $x \in B'_1 \cap Y  \cap B'_2 \cap Y$ for base elements $B'_1,B''_2$ of X. So $x \in  B'_1 \cap B'_2$ so $\exists B'_3 \st x \in  B'_1 \cap B'_2 \subseteq B'_3$. Then $B_3 = B'_3 \cap Y$ satisfies $x \in  B_1 \cap B_2 \subseteq B_3$
 \end{enumerate}
 \end{verify}
 \end{lemma}
 
-
-\begin{definition}{Subbasis for a topology}
-$\newline$
-A subbasis $\mathcal{S}$ for a topology on X is cover of X and $\textbf{the topology generated by the subbasis}$ is the collection $\mathcal{T}$ of unions of finite intersections of elements of  $\mathcal{S}$
+\subsection{Product topology}
+\begin{definition}{(\textbf{Product topology})}
+If X and Y are topological spaces then the collection $\mathcal{B}_{X \times Y}$ of subsets of $X \times Y$ of the form $U \times V$ where U is open in X and V is open in Y is a base for a topology. 
 \end{definition}
-\begin{verify} (the topology generated by a subbasis is indeed a topology)
-$\newline$ 
+\begin{verify}
+$\newline$
 \begin{enumerate}
-\item 
-\item 
-\item
+\item (cover)  $X \times Y$  is covered by the single product subset $X \times Y$
+\item (intersections) If $(x,y) \in U_1 \times V_1 \cap U_2 \times V_2$
 \end{enumerate}
 \end{verify}
+
+\section{Continuous maps}
 
 \begin{definition}{(\textbf{Continuous map})}
  Let $(X,\mathcal{T}_X)$ and $(Y,\mathcal{T}_Y)$ be topological spaces.
@@ -198,26 +247,29 @@ $\newline$
 \end{definition}
 
 \begin{remark}
-If the topology on Y has a basis, then continuity of a map to Y can be defined in terms of the basis elements of Y, since
+If the topology on Y has a base, then continuity of a map to Y can be defined in terms of the base elements of Y, since
  if V is open in Y
- then V is a union of basis elements, $V = \bigcup B_{\alpha}$
- and the preimage set map respects unions: $preim_f(V) = preim_f(\bigcup B_{\alpha}) =\bigcup preim_f(B_{\alpha})$, so if all the $preim_f(B_{\alpha})$ are open then $preim_f(V)$ is open since it can expressed as a union of  preimages of basis elements.
+ then V is a union of base elements, $V = \bigcup B_{\alpha}$
+ and the preimage set map respects unions: $preim_f(V) = preim_f(\bigcup B_{\alpha}) =\bigcup preim_f(B_{\alpha})$, so if all the $preim_f(B_{\alpha})$ are open then $preim_f(V)$ is open since it can expressed as a union of  preimages of base elements.
 \end{remark}
 
 \begin{remark}
-If the topology on Y is given by a subbasis $\mathcal{S}$, then to show continuity of a map, it suffices to show that the preimage under the map of the subbasis elements are open since
+If the topology on Y is given by a subbase $\mathcal{S}$, then to show continuity of a map, it suffices to show that the preimage under the map of the subbase elements are open since
  if V is open in Y
- then V is a union of basis elements, $V = \bigcup B_{\alpha}$ and each basis element is a finite intersection of $n_{\alpha}$ subbasis elements (indexed by $i_{\alpha}$)
+ then V is a union of base elements, $V = \bigcup B_{\alpha}$ and each base element is a finite intersection of $n_{\alpha}$ subbase elements (indexed by $i_{\alpha}$)
  and the preimage set map respects intersections and unions: $preim_f(V) = preim_f(\bigcup\limits_{\alpha \in A} B_{\alpha}) = preim_f( \bigcup\limits_{\alpha \in A} \;\bigcap\limits_{        i_{\alpha} \in \{1, \dots, n_{\alpha} \} }  S_{i_{\alpha}})$  since $B_{\alpha} = \bigcap\limits_{i_{\alpha} \in \{1, \dots, n_{\alpha} \} } S_{i_{\alpha}}$
  \\
- Then $preim_f(V) = preim_f( \bigcup\limits_{\alpha \in A} \;\bigcap\limits_{        i_{\alpha} \in \{1, \dots, n_{\alpha} \} }  S_{i_{\alpha}}) = \bigcup\limits_{\alpha \in A} preim_f(\bigcap\limits_{        i_{\alpha} \in \{1, \dots, n_{\alpha} \} }  S_{i_{\alpha}} )= \bigcup\limits_{\alpha \in A}\; \bigcap\limits_{        i_{\alpha} \in \{1, \dots, n_{\alpha} \} }  preim_f(S_{i_{\alpha}})$, so if each of those preimages of subbasis elements is open under f then the union of finite intersections of them is open.
+ Then $preim_f(V) = preim_f( \bigcup\limits_{\alpha \in A} \;\bigcap\limits_{        i_{\alpha} \in \{1, \dots, n_{\alpha} \} }  S_{i_{\alpha}}) = \bigcup\limits_{\alpha \in A} preim_f(\bigcap\limits_{        i_{\alpha} \in \{1, \dots, n_{\alpha} \} }  S_{i_{\alpha}} )= \bigcup\limits_{\alpha \in A}\; \bigcap\limits_{        i_{\alpha} \in \{1, \dots, n_{\alpha} \} }  preim_f(S_{i_{\alpha}})$, so if each of those preimages of subbase elements is open under f then the union of finite intersections of them is open.
  
- %\bigcup preim_f(B_{\alpha})$, so if all the $preim_f(B_{\alpha})$ are open then $preim_f(V)$ is open since it can expressed as a union of  preimages of basis elememts.
+ %\bigcup preim_f(B_{\alpha})$, so if all the $preim_f(B_{\alpha})$ are open then $preim_f(V)$ is open since it can expressed as a union of  preimages of base elememts.
 \end{remark}
 
-$\pagebreak$
+\begin{definition}{$\textbf{Continuous map at a point}$}
+A mapping f of X to Y is $\textbf{continuous at } x_0 \in Y$ if for any nbhd V' of $f(x_0)$ in Y,  there is a nbhd V of $x_0$ in X such that the relation $x \in V \implies f(x) \in V'$
+\end{definition}
 
-\newtheorem*{theorem}{Theorem}
+
+\newtheorem*{theorem}{Theorem: $\epsilon \text{--} \delta$}
 \begin{theorem} $f:\mathbb{R} \rightarrow \mathbb{R}$ is $(\epsilon \text{--} \delta$)-continuous if and only if it is open-set continuous.
 \end{theorem}
 Recall $f:\mathbb{R} \rightarrow \mathbb{R}$ is $(\epsilon \text{--} \delta$)-continuous, if $\forall \epsilon > 0 \; \exists \delta > 0$ such that $|x - a| < \delta \implies |f(x) -f(a)| < \epsilon$
@@ -233,9 +285,9 @@ Note:$|f(x) -f(a)| < \epsilon$ is the interval $f(a) - \epsilon < f(x) < f(a) - 
 
 %$\pagebreak$
 
-\begin{definition}{Open map} \\\\
- Let $(X,\mathcal{T}_X)$ and $(Y,\mathcal{T}_Y)$ be topological spaces. \\\\
- A map $f X: \rightarrow Y$ is called $\textbf{open}$ if for all U open in X,  f(U) is open in Y.
+\begin{definition}{Open/closed map} \\
+ Let $(X,\mathcal{T}_X)$ and $(Y,\mathcal{T}_Y)$ be topological spaces. 
+ A map $f X: \rightarrow Y$ is called $\textbf{open/closed}$ if for all A open/closed in X,  f(A) is open/closed in Y. The canonical projection maps $pr_i$
 \end{definition}
 
 %\theoremstyle{definition}
@@ -245,6 +297,8 @@ $\newline$
 Consider the space $X \times Y$ with the product topology $ \mathcal{T}_{X \times Y}$
 \end{example}
 
+$\newline$ 
+$\newline$ 
 \begin{definition}{($\textbf{Homeomorphism}$)} A map $f:X \rightarrow Y$ is a $\textbf{homeomorphism}$ if f is bijective, f is continuous and $f^{-1}$, also a bijection,  is continuous
 \end{definition}
 
